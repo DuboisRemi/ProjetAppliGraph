@@ -22,10 +22,22 @@ def GraphsGenerate(n,x):
         listGraph.append(G)
         nbGraph += 1
 
+
+
     for graph in listGraph:
-        nbDeNoeud=random.randint(1,(x-1)*(x-1))
+        #On commence par relier chaque noeud a un autre aleatoirement pour eviter les noeuds isoles
+        for noeud in list(G.nodes):
+            noeudCouple = random.randint(0,G.number_of_nodes()-1)
+
+            #On ecrase le noeud couple si c est le noeud traite
+            while noeudCouple == noeud :
+                    noeudCouple = random.randint(0, G.number_of_nodes() - 1)
+            graph.add_edge(noeud,noeudCouple)
+
+        #On choisi aleatoirement le nombre d arete du graphe
+        nbEdge=random.randint(1,(x-1)*(x-1))-x
         cpt =0
-        while cpt < nbDeNoeud :
+        while cpt < nbEdge :
             graph.add_edge(random.randint(0,G.number_of_nodes()-1),random.randint(0,G.number_of_nodes()-1))
             cpt += 1
 
@@ -41,4 +53,4 @@ def GraphsGenerate(n,x):
         cptGraph += 1
 
 
-GraphsGenerate(5,10)
+GraphsGenerate(50,10)
