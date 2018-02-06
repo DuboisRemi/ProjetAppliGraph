@@ -5,22 +5,22 @@ import random
 
 #Generer n graphes de x sommet
 
-def GraphsGenerate(n,x):
+def GraphsGenerate(nbGraphes, nbNoeuds):
 
     #On cree une liste de graphe vide
     listGraph = []
 
     #On recupere la liste des noeuds generer
-    listNode = FactoryNode.NodesGenerate(x)
+    listNode = FactoryNode.NodesGenerate(nbNoeuds)
 
     #On cree n graph et on les ajoute a la liste
-    nbGraph = 0
-    while nbGraph < n :
+    graphDansListe = 0
+    while graphDansListe < nbGraphes :
         G = nx.Graph()
         for node in listNode:
             G.add_node(node)
         listGraph.append(G)
-        nbGraph += 1
+        graphDansListe += 1
 
 
 
@@ -35,7 +35,7 @@ def GraphsGenerate(n,x):
             graph.add_edge(noeud,noeudCouple)
 
         #On choisi aleatoirement le nombre d arete du graphe
-        nbEdge=random.randint(1,(x-1)*(x-1))-x
+        nbEdge= random.randint(1, (nbNoeuds - 1) * (nbNoeuds - 1)) - nbNoeuds
         cpt =0
         while cpt < nbEdge :
             graph.add_edge(random.randint(0,G.number_of_nodes()-1),random.randint(0,G.number_of_nodes()-1))
