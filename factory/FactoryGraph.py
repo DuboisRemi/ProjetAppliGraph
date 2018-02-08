@@ -5,7 +5,7 @@ from entity import PaireGraphs
 import random
 
 #Fonction qui creer des aretes aleatoire entre les points des graphes
-def creerAretes(graphe):
+def CreerAretes(graphe):
     # On commence par relier chaque noeud a un autre aleatoirement pour eviter les noeuds isoles
     for noeud in list(graphe.nodes):
         noeudCouple = random.randint(0, graphe.number_of_nodes() - 1)
@@ -27,7 +27,7 @@ def creerAretes(graphe):
 
 
 
-def GraphsGenerate(nbPairesGraphes, nbNoeuds, nbPairesIsomorphes):
+def GraphsGenerate(nbPairesGraphes, nbNoeuds):
 
     #On cree une liste de paires de graphes vide
     listPaireGraphs = []
@@ -37,30 +37,13 @@ def GraphsGenerate(nbPairesGraphes, nbNoeuds, nbPairesIsomorphes):
 
 
 
-    #On creer tout d'abord des paires identiques
-    while len(listPaireGraphs) < nbPairesIsomorphes :
+    #On creer des paires identiques
+    while len(listPaireGraphs) < nbPairesGraphes :
         G = nx.Graph()
         for node in listNode:
             G.add_node(node)
-        G = creerAretes(G)
+        G = CreerAretes(G)
         paireGraphe = PaireGraphs.PaireGraphs(G, G, True)
-        listPaireGraphs.append(paireGraphe)
-
-
-
-
-
-    #On considere que les graphes generes aleatoirement ne sont pas isomorphes ( c est probable quand meme )
-    while len(listPaireGraphs)< nbPairesGraphes :
-        G1 = nx.Graph()
-        for node in listNode:
-            G1.add_node(node)
-        G1 = creerAretes(G1)
-        G2 = nx.Graph()
-        for node in listNode:
-            G2.add_node(node)
-        G2 = creerAretes(G2)
-        paireGraphe = PaireGraphs.PaireGraphs(G1, G2, False)
         listPaireGraphs.append(paireGraphe)
 
 
@@ -78,6 +61,8 @@ def GraphsGenerate(nbPairesGraphes, nbNoeuds, nbPairesIsomorphes):
         nx.draw(graph2)
         plt.show()
 
+    print(len(listPaireGraphs), " Paires de graphd generees")
 
 
-GraphsGenerate(10,10,3)
+
+#GraphsGenerate(10,10)
