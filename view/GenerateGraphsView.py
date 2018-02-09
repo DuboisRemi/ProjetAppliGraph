@@ -1,5 +1,12 @@
 from Tkinter import *
-from controler.Controler import GenerateGraphsContol
+from controler.GenerateGraphsControler import GenerateGraphsContol
+
+
+def buttonClick():
+    GenerateGraphsContol(nbPairesGraphs.get(), nbNoeuds.get())
+    root.destroy()
+
+
 
 root = Tk()
 
@@ -22,7 +29,11 @@ nbNoeuds = IntVar()
 entryNbNoeuds = Entry(root, textvariable=nbNoeuds)
 entryNbNoeuds.grid(row=4)
 
-button = Button(root, text="Generer",command=lambda: GenerateGraphsContol(nbPairesGraphs.get(), nbNoeuds.get()))
+button = Button(root, text="Generer",command=lambda: buttonClick())
 button.grid(row=6)
 
 root.mainloop()
+
+
+
+
