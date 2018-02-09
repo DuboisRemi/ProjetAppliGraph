@@ -1,0 +1,5 @@
+- Implémenter Umeyama et l'autre fonction
+- Ajouter un bouton dans la view qui lance les 2 fonctions 
+- Les fonctions renvoient un taux d'erreur ( d'appariement noeud à noeud )
+- Les fonctions renvoient un temps d'exécution
+- Créer une ihm qui affiche les résultats des 2 fonctions
