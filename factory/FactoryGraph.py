@@ -51,7 +51,7 @@ def GraphsGenerate(nbPairesGraphes, nbNoeuds):
 
 
 
-    """Permet d'afficher et sauvegarder les graphes pour test"""
+    """Permet d'afficher et sauvegarder les graphes pour test
     for paire in listPaireGraphs:
         graph1 = paire.premierGraphe
         nx.draw(graph1)
@@ -59,11 +59,10 @@ def GraphsGenerate(nbPairesGraphes, nbNoeuds):
         #nx.write_gexf(graph1,"test"+str(cptGraph)+".gexf")
         graph2 = paire.secondGraphe
         nx.draw(graph2)
-        plt.show()
+        plt.show()"""
 
-    print(len(listPaireGraphs), " Paires de graphd generees")
+    print(len(listPaireGraphs), " Paires de graphes generees")
     return listPaireGraphs
 
 
 
-#GraphsGenerate(10,10)

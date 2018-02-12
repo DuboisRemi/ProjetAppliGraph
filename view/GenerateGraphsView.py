@@ -3,8 +3,9 @@ from controler.GenerateGraphsControler import GenerateGraphsContol
 
 
 def buttonClick():
-    GenerateGraphsContol(nbPairesGraphs.get(), nbNoeuds.get())
     root.destroy()
+    GenerateGraphsContol(nbPairesGraphs.get(), nbNoeuds.get())
+
 
 
 
