@@ -59,9 +59,9 @@ def GraphsGenerate(nbPairesGraphes, nbNoeuds):
         #nx.write_gexf(graph1,"test"+str(cptGraph)+".gexf")
         graph2 = paire.secondGraphe
         nx.draw(graph2)
-        plt.show()"""
+        plt.show()
 
-    print(len(listPaireGraphs), " Paires de graphes generees")
+    print(len(listPaireGraphs), " Paires de graphes generees")"""
     return listPaireGraphs
 
 
