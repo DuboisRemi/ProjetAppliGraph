@@ -1,11 +1,14 @@
 import networkx as nx
 from numpy import linalg, matmul,transpose
+from munkres import Munkres
 
 
 
-def umeyama(listPairesGraphs):
+def umeyama(liste_paires_graphes):
+    #Compteur d'erreur global
+    cpt_erreur = 0
 
-    for paires in listPairesGraphs :
+    for paires in liste_paires_graphes :
         # Retourne les matrice d adjacences ( on transforme en array de array )
         adjacency_matrix_un = nx.adjacency_matrix(paires.premierGraphe).toarray()
         adjacency_matrix_deux = nx.adjacency_matrix(paires.secondGraphe).toarray()
@@ -27,33 +30,22 @@ def umeyama(listPairesGraphs):
 
         matrice_similarite = matmul(matrice_modale_un,transpose(matrice_modale_deux))
 
-        # On fait l'algo hongrois ( munkres )
+        # On fait l'algo hongrois ( munkres ) qui retourne des paires de noeuds apparies
+        m = Munkres()
+        paires_noeuds = m.compute(matrice_similarite)
 
-        # Reduction des lignes
-        for i in range(len(matrice_similarite)):
-            min_val_ligne = matrice_similarite[i][0]
-            for val in matrice_similarite[i]:
-                if val < min_val_ligne:
-                    min_val_ligne = val
-            for j in  range(len(matrice_similarite[i])):
-                matrice_similarite[i][j] -= min_val_ligne
 
-        # Reduction des colonnes
-        for k in range(len(matrice_similarite)):
-            min_val_colonne = matrice_similarite[0][k]
-            for l in range(len(matrice_similarite)):
-                if matrice_similarite[l][k] < min_val_colonne:
-                    min_val_colonne = matrice_similarite[l][k]
-            for m in range(len(matrice_similarite)):
-                matrice_similarite[m][k] -= min_val_colonne
+        # On regarde lez correspondances noeuds a noeuds et on compte les erreurs
+        for noeuds_associes in paires_noeuds :
+            node_1 = paires.premierGraphe.nodes.items()[noeuds_associes[0]][0]
+            node_2 = paires.secondGraphe.nodes.items()[noeuds_associes[1]][0]
+
+
+            if node_1 != node_2:
+                cpt_erreur += 1
 
 
 
-
-
-
-
-
-
-
-
+    print cpt_erreur
+    taux_erreur = float((cpt_erreur*100) /(len(liste_paires_graphes[0].premierGraphe.nodes)*len(liste_paires_graphes)))
+    print taux_erreur
