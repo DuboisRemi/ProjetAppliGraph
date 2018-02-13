@@ -17,7 +17,7 @@ def umeyama(liste_paires_graphes):
         matrice_modale_un = linalg.eig(adjacency_matrix_un)[1]
         matrice_modale_deux = linalg.eig(adjacency_matrix_deux)[1]
 
-        # Pour obtenir la matrice de similarite il faut utiliser les valeurs absolues dans les matrices
+        # Pour obtenir les matrices modales il faut utiliser les valeurs absolues dans les matrices
         for array in matrice_modale_un:
             for valeur in range(len(array)):
                 array[valeur] = abs(array[valeur])
