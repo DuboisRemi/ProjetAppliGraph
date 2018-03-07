@@ -2,7 +2,7 @@ import networkx as nx
 from numpy import linalg, matmul,transpose
 from munkres import Munkres, make_cost_matrix
 import sys
-import matplotlib.pyplot as plt
+import time
 from entity import PaireGraphs
 
 
@@ -10,8 +10,15 @@ from factory import FactoryNode
 
 
 def umeyama(liste_paires_graphes):
-    #Compteur d'erreur global
+
+    # On lance le chrono
+    chrono = time.clock()
+
+    # Compteur d'erreur global
     cpt_erreur = 0
+
+    # On stock la taille des graphes
+    taille_graphe = liste_paires_graphes[0].premierGraphe.number_of_nodes()
 
     for paires in liste_paires_graphes :
         # Retourne les matrice d adjacences ( on transforme en array de array )
@@ -37,27 +44,31 @@ def umeyama(liste_paires_graphes):
         # On calcule ensuite la matrice de similitude
 
         matrice_similarite = matmul(matrice_modale_un,transpose(matrice_modale_deux))
-
-        cost_matrix = make_cost_matrix(matrice_similarite, lambda cost: sys.maxint - cost)
-
+        cost_matrix = make_cost_matrix(matrice_similarite)
 
         # On fait l'algo hongrois ( munkres ) qui retourne des paires de noeuds apparies
         m = Munkres()
         paires_noeuds = m.compute(cost_matrix)
-
-        print paires_noeuds
 
         # On regarde lez correspondances noeuds a noeuds et on compte les erreurs
         for noeuds_associes in paires_noeuds :
             node_1 = paires.premierGraphe.nodes.items()[noeuds_associes[0]][0]
             node_2 = paires.secondGraphe.nodes.items()[noeuds_associes[1]][0]
 
-            if node_1 != node_2:
-                cpt_erreur += 1
+            # On prend en compte le decalage des 2 graphes dans la comparaison
+            if node_1 < taille_graphe/2:
+                if node_1 + taille_graphe/2 != node_2:
+                    cpt_erreur += 1
+
+            else:
+                if node_1 - taille_graphe/2 != node_2:
+                    cpt_erreur += 1
 
 
 
-    print cpt_erreur
-    taux_erreur = float((cpt_erreur*100) /(len(liste_paires_graphes[0].premierGraphe.nodes)*len(liste_paires_graphes)))
+    taux_erreur = float((cpt_erreur*100) /(taille_graphe*len(liste_paires_graphes)))
 
-    print taux_erreur
+    print "Taux d erreur = %f\n"%taux_erreur
+    print "Temps execution = %f\n"%(time.clock()-chrono)
+
+
