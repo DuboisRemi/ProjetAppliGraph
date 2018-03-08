@@ -1,6 +1,7 @@
 import networkx as nx
 from numpy import linalg, matmul,transpose
 from munkres import Munkres, make_cost_matrix
+from math import ceil,floor
 import sys
 import time
 from entity import PaireGraphs
@@ -56,17 +57,15 @@ def umeyama(liste_paires_graphes):
             node_2 = paires.secondGraphe.nodes.items()[noeuds_associes[1]][0]
 
             # On prend en compte le decalage des 2 graphes dans la comparaison
-            if node_1 < taille_graphe/2:
-                if node_1 + taille_graphe/2 != node_2:
+            if node_1 < (taille_graphe/2):
+                if node_1 + (int)(taille_graphe/2) != node_2:
                     cpt_erreur += 1
 
             else:
-                if node_1 - taille_graphe/2 != node_2:
+                if node_1 - (int)(taille_graphe/2) != node_2:
                     cpt_erreur += 1
 
-
-
-    taux_erreur = float((cpt_erreur*100) /(taille_graphe*len(liste_paires_graphes)))
+    taux_erreur = float((cpt_erreur*100) / (taille_graphe*len(liste_paires_graphes)))
 
     print "Taux d erreur = %f\n"%taux_erreur
     print "Temps execution = %f\n"%(time.clock()-chrono)

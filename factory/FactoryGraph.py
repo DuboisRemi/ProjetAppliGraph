@@ -24,15 +24,15 @@ def CreerAretes(graphe_1, graphe_2):
 
         # On decale sur le deuxieme graphe
         noeud_2 = noeud + (int)(taille_graphe/2)
-        if noeud_2 >taille_graphe- 1:
+        if noeud_2 > (taille_graphe - 1):
             noeud_2 -= taille_graphe
         noeudCouple_2 = noeudCouple + (int)(taille_graphe/2)
-        if noeudCouple_2 > graphe_1.number_of_nodes() - 1:
-            noeudCouple_2 -= graphe_1.number_of_nodes()
+        if noeudCouple_2 > (taille_graphe - 1):
+            noeudCouple_2 -= taille_graphe
         graphe_2.add_edge(noeud_2, noeudCouple_2, weight=poids)
 
     # On choisi aleatoirement le nombre d arete du graphe
-    nbEdge = random.randint(1, (graphe_1.number_of_nodes() - 1)*(graphe_1.number_of_nodes() - 1))
+    nbEdge = random.randint(1, (taille_graphe - 1)*(taille_graphe - 1))
     cpt = 0
     while cpt < nbEdge:
         noeud_1 = random.randint(0, taille_graphe - 1)
@@ -45,7 +45,7 @@ def CreerAretes(graphe_1, graphe_2):
             noeud_1 -= taille_graphe
 
         noeud_2 += (int)(taille_graphe/2)
-        if noeud_2 > taille_graphe - 1:
+        if noeud_2 > (taille_graphe - 1):
             noeud_2 -= taille_graphe
         graphe_2.add_edge(noeud_1, noeud_2, weight=poids)
         cpt += 1
