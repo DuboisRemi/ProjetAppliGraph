@@ -1,7 +1,8 @@
-import os
+import networkx as nx
 import xml.etree.ElementTree as ET
 import csv
-
+from entity import PaireGraphs
+import matplotlib.pyplot as plt
 
 # Fonction qui va nous retourner les resultats attendus
 # On effectue d'abord un travail sur le fichier pour le liberer pendant le traitement futur
@@ -97,6 +98,77 @@ def readGraph(name):
 
     return graphe
 
-data = grecLowLevelInfo('Data/LevelInfo/GREC10-lowlevelinfo.csv')
+# Fonction qui va generer un graphe de type Networkx
+'''
+    listeInfo : (nomDuGraphe, liste_noeuds, liste_aretes)
+'''
+def generateGraph(listeInfo):
 
-print(readGraph(data[0][0]))
+    # Creation du graphe au format networkx
+    graph = nx.Graph()
+
+    #Recuperation des noeuds & aretes
+    liste_Noeuds = listeInfo[1]
+    liste_Aretes = listeInfo[2]
+
+    # Ajout des noeuds
+    for node in liste_Noeuds:
+        id = node[0]
+        label = node[1]
+        graph.add_node(id, label = label)
+
+    # Ajout des aretes
+    for edge in liste_Aretes:
+        fr = edge[0]
+        to = edge[1]
+        label = edge[2]
+        graph.add_edge(fr, to, label = label)
+
+    return graph
+
+def generatePaireGraph(graphe1, graphe2, matching):
+    gr1 = generateGraph(graphe1)
+    gr2 = generateGraph(graphe2)
+
+    matching = matching.split("/")
+    liste_matching = []
+
+    # On recupere les cellules correspondant aux node et non aux edge
+    liste_node_cell = []
+    for cell in matching:
+        if "Node:" in cell:
+            liste_node_cell.append(cell)
+
+    # On va recuperer les matching
+    for cell in liste_node_cell:
+        new_matching = []
+        new_matching.append(cell[5])
+        new_matching.append(cell[8])
+        liste_matching.append(new_matching)
+
+    nouvelle_paire = PaireGraphs.PaireGraphs(gr1, gr2, liste_matching)
+
+    return nouvelle_paire
+
+'''
+    Partie verification
+'''
+# data = grecLowLevelInfo('Data/LevelInfo/GREC10-lowlevelinfo.csv')
+#
+# g = data[1][3]
+# g = g.split("/")
+# print(g)
+# trueG = []
+# for cell in g:
+#     if "Node:" in cell:
+#         trueG.append(cell)
+# for cell in trueG:
+#     print(cell[5])
+#     print(cell[8])
+
+# print(g)
+#
+# gG = generateGraph(g)
+#
+# nx.draw(gG)
+# plt.show()
