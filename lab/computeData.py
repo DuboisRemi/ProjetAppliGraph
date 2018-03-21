@@ -1,14 +1,34 @@
-import xml.etree.ElementTree as ET
 import os
+import xml.etree.ElementTree as ET
+import csv
 
-#
-# On initialise la future collection qui va contenir les graphes
-liste_graphes = []
 
-# On parcours tous les fichiers du dossiers contenant les graphes
-for file in os.listdir('GREC'):
-    # print(file)
-    tree = ET.parse('GREC/'+file)
+# Fonction qui va nous retourner les resultats attendus
+# On effectue d'abord un travail sur le fichier pour le liberer pendant le traitement futur
+def grecLowLevelInfo(filepath):
+
+    # Nous ouvrons le fichier au format csv
+    with open(filepath) as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=';')
+
+        # Nous creeons la structure qui va contenir les informations qui nous interessent
+        '''
+        Structure de data : (liste_information)
+            liste_information = (nomGraphe1, nomGraphe2, distance, matching)
+        '''
+        data = []
+        for row in reader:
+            nouvelle_entree = []
+            nouvelle_entree.append(row['Graph1 Name'])
+            nouvelle_entree.append(row['Graph2 Name'])
+            nouvelle_entree.append(row[' distance'])
+            nouvelle_entree.append(row['matching'])
+            data.append(nouvelle_entree)
+        return data
+
+# Ici, une fonction qui nous retournera les informations du graphe de nom "name"
+def readGraph(name):
+    tree = ET.parse('Data/GREC/' + name)
     root = tree.getroot()
 
     # Nous creeons la structure qui representera un graphe
@@ -19,7 +39,7 @@ for file in os.listdir('GREC'):
         liste_aretes : liste qui contiendra toutes les aretes du graphe
     '''
     graphe = []
-    graphe.append(file)
+    graphe.append(name)
 
     # Nous recuperons les noeuds du graphe en cours de traitement
     '''
@@ -42,7 +62,6 @@ for file in os.listdir('GREC'):
                 label.append(value)
         noeud.append(label)
         liste_noeud.append(noeud)
-
 
     # print(liste_noeud)
 
@@ -76,6 +95,8 @@ for file in os.listdir('GREC'):
     graphe.append(liste_noeud)
     graphe.append(liste_arete)
 
-    liste_graphes.append(graphe)
+    return graphe
 
-print(liste_graphes[0])
+data = grecLowLevelInfo('Data/LevelInfo/GREC10-lowlevelinfo.csv')
+
+print(readGraph(data[0][0]))

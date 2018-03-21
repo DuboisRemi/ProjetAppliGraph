@@ -1,5 +1,0 @@
-- La fonction qui se base sur la signature des noeuds
-- Ajouter un bouton dans la view qui lance les 2 fonctions 
-- Les fonctions renvoient un taux d'erreur ( d'appariement noeud à noeud ) ( ok pour Umeyama )
-- Les fonctions renvoient un temps d'exécution ( ok pour Umeyama )
-- Créer une ihm qui affiche les résultats des 2 fonctions
