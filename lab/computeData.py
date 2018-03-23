@@ -105,7 +105,7 @@ def readGraph(name):
 def generateGraph(listeInfo):
 
     # Creation du graphe au format networkx
-    graph = nx.Graph()
+    G = nx.Graph()
 
     #Recuperation des noeuds & aretes
     liste_Noeuds = listeInfo[1]
@@ -115,16 +115,16 @@ def generateGraph(listeInfo):
     for node in liste_Noeuds:
         id = node[0]
         label = node[1]
-        graph.add_node(id, label = label)
+        G.add_node(id, label = label)
 
     # Ajout des aretes
     for edge in liste_Aretes:
         fr = edge[0]
         to = edge[1]
         label = edge[2]
-        graph.add_edge(fr, to, label = label)
+        G.add_edge(fr, to, label = label)
 
-    return graph
+    return G
 
 def generatePaireGraph(graphe1, graphe2, matching):
     gr1 = generateGraph(graphe1)

@@ -70,8 +70,8 @@ def GraphsGenerate(nbPairesGraphes, nbNoeuds):
         G1 = nx.Graph()
         G2 = nx.Graph()
         for node in listNode:
-            G1.add_node(node)
-            G2.add_node(node)
+            G1.add_node(node, weight=random.randint(1, 10))
+            G2.add_node(node, weight=random.randint(1, 10))
         liste_graphes = CreerAretes(G1,G2)
         paireGraphe = PaireGraphs.PaireGraphs(liste_graphes[0], liste_graphes[1], True)
         listPaireGraphs.append(paireGraphe)
