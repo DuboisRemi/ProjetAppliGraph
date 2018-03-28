@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import csv
 from entity import PaireGraphs
 import matplotlib.pyplot as plt
+import re
 
 # Fonction qui va nous retourner les resultats attendus
 # On effectue d'abord un travail sur le fichier pour le liberer pendant le traitement futur
@@ -136,15 +137,21 @@ def generatePaireGraph(graphe1, graphe2, matching):
     # On recupere les cellules correspondant aux node et non aux edge
     liste_node_cell = []
     for cell in matching:
-        if "Node:" in cell:
-            liste_node_cell.append(cell)
+        '''if "Node:" in cell:
+            liste_node_cell.append(cell)'''
+        if re.match("^(Node:)([0-9]{1,2})(->)([0-9]{1,2})",cell):
+            m = re.search("^(Node:)([0-9]{1,2})(->)([0-9]{1,2})", cell)
+            new_matching = []
+            new_matching.append(m.group(2))
+            new_matching.append(m.group(4))
+            liste_matching.append(new_matching)
 
     # On va recuperer les matching
-    for cell in liste_node_cell:
+    '''for cell in liste_node_cell:
         new_matching = []
         new_matching.append(cell[5])
         new_matching.append(cell[8])
-        liste_matching.append(new_matching)
+        liste_matching.append(new_matching)'''
 
     nouvelle_paire = PaireGraphs.PaireGraphs(gr1, gr2, liste_matching)
 

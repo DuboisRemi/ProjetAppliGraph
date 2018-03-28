@@ -21,6 +21,8 @@ def umeyama(liste_paires_graphes):
     # Compteur d'erreur global
     cpt_erreur = 0
 
+    cpt_noeud_traites = 0
+
     # On stock la taille des graphes
     taille_graphe = liste_paires_graphes[0].premierGraphe.number_of_nodes()
 
@@ -62,8 +64,10 @@ def umeyama(liste_paires_graphes):
                 noeud_1 = (int)(corresponsance[0])
                 noeud_2 = (int)(corresponsance[1])
                 for noeuds_associes in paires_noeuds:
-                    if  noeuds_associes[0] == noeud_1 and noeuds_associes[1] != noeud_2:
-                         cpt_erreur += 1
+                    if  noeuds_associes[0] == noeud_1:
+                        cpt_noeud_traites +=1
+                        if noeuds_associes[1] != noeud_2:
+                            cpt_erreur += 1
 
             except:
                 print "Une valeur de la correpsondance n est pas un entier"
@@ -75,6 +79,7 @@ def umeyama(liste_paires_graphes):
 
     print "Taux d erreur = %f\n"%taux_erreur
     print "Temps execution = %f\n"%(time.clock()-chrono)
+    print "nb noeuds traite = %f\n"%cpt_noeud_traites
 
 
 
@@ -87,6 +92,9 @@ def jouili(liste_paires_graphes):
 
     # Compteur d'erreur global
     cpt_erreur = 0
+
+    cpt_noeud_traites = 0
+
 
     nb_noeuds = 0
     for paire in liste_paires_graphes:
@@ -109,27 +117,27 @@ def jouili(liste_paires_graphes):
         m = Munkres()
         paires_noeuds = m.compute(matrice_distance)
 
-        for noeuds_associes in paires_noeuds:
-            node_1 = paire.premierGraphe.nodes.items()[noeuds_associes[0]][0]
-            node_2 = paire.secondGraphe.nodes.items()[noeuds_associes[1]][0]
 
-            # On prend en compte le decalage des 2 graphes dans la comparaison
-            liste_corresponsance = paire.matching
-            for corresponsance in liste_corresponsance:
-                try:
-                    noeud_1 = (int)(corresponsance[0])
-                    noeud_2 = (int)(corresponsance[1])
-                    for noeuds_associes in paires_noeuds:
-                        if noeuds_associes[0] == noeud_1 and noeuds_associes[1] != noeud_2:
+        liste_corresponsance = paire.matching
+        for corresponsance in liste_corresponsance:
+            try:
+                noeud_1 = (int)(corresponsance[0])
+                noeud_2 = (int)(corresponsance[1])
+                for noeuds_associes in paires_noeuds:
+                    if  noeuds_associes[0] == noeud_1:
+                        cpt_noeud_traites +=1
+                        if noeuds_associes[1] != noeud_2:
                             cpt_erreur += 1
 
-                except:
-                    print "Une valeur de la correpsondance n est pas un entier"
+            except:
+                print "Une valeur de la correpsondance n est pas un entier"
 
     taux_erreur = float((cpt_erreur * 100) / (nb_noeuds * len(liste_paires_graphes)))
 
     print "Taux d erreur = %f\n" % taux_erreur
     print "Temps execution = %f\n" % (time.clock() - chrono)
+    print "nb noeuds traite = %f\n"%cpt_noeud_traites
+
 
 
 
@@ -218,13 +226,13 @@ def calcul_distance_signatures(signature1, signature2):
 
 
 liste_paires_graphes = []
-data = computeData.grecLowLevelInfo('Data/LevelInfo/GREC10-lowlevelinfo.csv')
+data = computeData.grecLowLevelInfo('Data/LevelInfo/GREC5-lowlevelinfo.csv')
 for cellule in data:
     info_graphe1 = computeData.readGraph(cellule[0])
     info_graphe2 = computeData.readGraph(cellule[1])
     liste_paires_graphes.append(computeData.generatePaireGraph(info_graphe1, info_graphe2 , cellule[3]))
 
-
+print len(liste_paires_graphes)
 
 umeyama(liste_paires_graphes)
 jouili(liste_paires_graphes)
